@@ -1,0 +1,90 @@
+<style>
+    .chatBox {
+        width: 300px;
+        height: 400px;
+        background-color: gray;
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        transition: 0.2s ease-in;
+    }
+
+    .toggleShow {
+        display: none;
+    }
+
+    .hideChatBox {
+        height: 50px;
+    }
+</style>
+
+<div class="container-fluid">
+    {{>header}}
+    <div class="row">
+        <div class="card ">
+            <div class="card-body">
+                <div class="proList d-flex flex-row flex-wrap mb-3">
+                    {{#each proData}}
+                    <div class="card me-auto ms-auto mt-3 mb-3 proCard" ProID="{{this.ProID}}" style="width: 18rem;">
+                        <img src="/images/pid/{{this.ProID}}/main_thumbs.jpg" class="card-img-top"
+                            alt="/images/pid/{{this.ProID}}/main_thumbs.jpg">
+                        <div class="card-body d-flex flex-column  align-content-between ">
+                            <h5 class="card-title">{{this.ProName}}</h5>
+                            <p class="card-text">{{this.TinyDes}}</p>
+                            <p class="card-text">{{this.Price}}vnđ</p>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="chatBox">
+                <div class="card h-100">
+                    <h4 class="card-header chatBoxHeader  bg-primary text-light" style="height: 50px;">Chat với admin
+                    </h4>
+                    <div class="card-body chatBoxBody " style="height: 90%;">
+                        <div class="chatContent overflow-auto" style="height: 90%;">
+                        </div>
+                        <form class="d-flex justify-content-between" style="height: 10%;">
+                            <input class="inputmss " placeholder="Enter your mss..." type="text">
+                            <button class="sendmss btn btn-primary">send</button>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+    {{>footer}}
+</div>
+<script src="socket.io/socket.io.js"></script>
+<script>
+    const socket = io('https://localhost:3000');
+    const roomId = Math.floor(Math.random() * (9999999 - 1000000 + 1)) + 1000000;
+    socket.emit('join', roomId);
+    socket.on('message', data => {
+        const { room, des, mss } = data
+        $(`.chatContent`).append(`<div class=" mb-3 text-start">Admin: <button  style="max-width: 50%;" class=" text-start btn btn-primary disabled" >${mss}</button></div>`)
+        $(`.chatContent`).scrollTop($(`.chatContent`)[0].scrollHeight);
+    })
+    $('.sendmss').on('click', (e) => {
+        e.preventDefault();
+        if ($('.inputmss').val() != null && $('.inputmss').val() != '') {
+            $(`.chatContent`).append(`<div class=" mb-3 text-end"><button  style="max-width: 50%;" class=" text-start btn btn-primary disabled" >${$('.inputmss').val()}</button></div>`)
+            socket.emit('message', { room: roomId, des: 'admin', mss: $('.inputmss').val() });
+            $(`.chatContent`).scrollTop($(`.chatContent`)[0].scrollHeight);
+            $('.inputmss').val('');
+        }
+
+    })
+
+    $('.chatBoxHeader').on('click', (e) => {
+        $('.chatBoxBody').toggleClass('toggleShow');
+        $('.chatBox').toggleClass('hideChatBox')
+    })
+
+
+
+</script>

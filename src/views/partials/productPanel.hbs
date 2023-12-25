@@ -1,0 +1,179 @@
+<div class="tab-pane fade active show h-100" id="v-pills-products" role="tabpanel"
+    aria-labelledby="v-pills-products-tab d-flex flex-row" tabindex="0">
+    <div class="row h-100">
+        {{!-- Add and Detail --}}
+        <div class="col-5 border-end h-100">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="add-tab" data-bs-toggle="tab" data-bs-target="#add-tab-pane"
+                        type="button" role="tab" aria-controls="add-tab-pane" aria-selected="true">ADD</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="detail-tab" data-bs-toggle="tab" data-bs-target="#detail-tab-pane"
+                        type="button" role="tab" aria-controls="detail-tab-pane" aria-selected="false">Detail</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active mt-3" id="add-tab-pane" role="tabpanel" aria-labelledby="add-tab"
+                    tabindex="0">
+                    {{!-- Add --}}
+                    <form class="addForm" method="post" enctype="multipart/form-data">
+                        <div class="mb-3 addItem">
+                            <img src="image source" class="img-fluid rounded-top" alt="">
+                        </div>
+                        <div class="mb-3 addItem">
+                            <label for="ProID" class="form-label">Product ID</label>
+                            <input type="number" class="form-control" name="ProID">
+                        </div>
+                        <div class="mb-3 addItem">
+                            <label for="ProName" class="form-label">Product name</label>
+                            <input type="text" class="form-control" name="ProName">
+                        </div>
+                        <div class="mb-3 addItem">
+                            <label for="TinyDes" class="form-label">Tiny
+                                description</label>
+                            <input type="text" class="form-control" name="TinyDes">
+                        </div>
+                        <div class="mb-3 addItem">
+                            <label for="FullDes" class="form-label">Full
+                                description</label>
+                            <textarea class="form-control" name="FullDes"></textarea>
+                        </div>
+                        <div class="mb-3 addItem">
+                            <label for="Quantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" name="Quantity" />
+                        </div>
+                        <div class="mb-3 addItem ">
+
+                            <label for="image" class="form-label">Image</label>
+                            <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
+                                <input name="image" id="image" accept=".jpg" id="upload"
+                                    type="file" onchange="readURL(this);" class="form-control border-0">
+                            </div>
+
+                            <p class="font-italic text-white text-center">The image uploaded will be rendered inside the
+                                box below.</p>
+                            <div class="image-area mt-4"><img id="imageResult" src="#" alt=""
+                                    class="img-fluid rounded shadow-sm mx-auto d-block"></div>
+
+                        </div>
+                        <div class="mb-3 addItem">
+                            <label for="Price" class="form-label">Price</label>
+                            <input type="number" class="form-control" name="Price" />
+                        </div>
+                        <label for="CatSelect" class="form-label">Category</label>
+                        <select name="CatID" class="form-select mb-3 addItem" aria-label="Disabled select CatSelect ">
+                            {{#each catData}}
+                            <option value="{{this.CatID}}" {{#if @first}} selected {{/if}}>
+                                {{this.CatName}}</option>
+                            {{/each}}
+                        </select>
+                        <button type="button" onclick="addPro()" class="btn btn-primary">ADD</button>
+                    </form>
+                </div>
+                <div class="tab-pane fade mt-3 productContent " id="detail-tab-pane" role="tabpanel"
+                    aria-labelledby="detail-tab" tabindex="0">
+                    {{!-- Detail --}}
+                    <p class="mssDetail">Choose product!</p>
+                    <form class="detailProForm d-none" method="post">
+                        <div class="mb-3 detailItem">
+                            <img src="image source" class="img-fluid rounded-top" alt="">
+                        </div>
+                        <div class="mb-3 detailItem">
+                            <label for="ProID" class="form-label">Product ID</label>
+                            <input type="number" class="form-control" readonly name="ProID">
+                        </div>
+                        <div class="mb-3 detailItem">
+                            <label for="ProName" class="form-label">Product name</label>
+                            <input type="text" class="form-control" name="ProName">
+                        </div>
+                        <div class="mb-3 detailItem">
+                            <label for="TinyDes" class="form-label">Tiny
+                                description</label>
+                            <input type="text" class="form-control" name="TinyDes">
+                        </div>
+                        <div class="mb-3 detailItem">
+                            <label for="FullDes" class="form-label">Full
+                                description</label>
+                            <textarea class="form-control" name="FullDes"></textarea>
+                        </div>
+                        <div class="mb-3 detailItem">
+                            <label for="Quantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" name="Quantity" />
+                        </div>
+                        <div class="mb-3 detailItem">
+                            <label for="Price" class="form-label">Price</label>
+                            <input type="number" class="form-control" name="Price" />
+                        </div>
+                        <label for="CatSelect" class="form-label">Category</label>
+                        <select name="CatID" class="form-select mb-3 detailItem"
+                            aria-label="Disabled select CatSelect ">
+                            {{#each catData}}
+                            <option value="{{this.CatID}}" {{#if @first}} selected {{/if}}>
+                                {{this.CatName}}</option>
+                            {{/each}}
+                        </select>
+                        <button type="button" onclick="updatePro()" class="btn btn-primary">SAVE</button>
+                        <button type="button" onclick="removePro()" class="btn btn-primary">REMOVE</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{!-- Show products list --}}
+        <div class="col-7 h-100">
+            <div class="dropdown-center d-flex  justify-content-end ">
+                <button class="btn w-50 btn-secondary dropdown-toggle catDropDown" type="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Categories
+                </button>
+                <ul class="dropdown-menu w-50">
+                    <li><a class="dropdown-item " href="#">All</a></li>
+                    {{#each catData}}
+                    <li><a class="dropdown-item" CatID="{{this.CatID}}" href="#">{{this.CatName}}</a></li>
+                    {{/each}}
+                </ul>
+            </div>
+            <div class="proList d-flex flex-row flex-wrap mb-3">
+                {{#each proData.products}}
+                <div class="card me-auto ms-auto mt-3 mb-3 proCard" ProID="{{this.ProID}}" style="width: 18rem;">
+                    <img src="/images/pid/{{this.ProID}}/main_thumbs.jpg" class="card-img-top"
+                        alt="/images/pid/{{this.ProID}}/main_thumbs.jpg">
+                    <div class="card-body d-flex flex-column  align-content-between ">
+                        <h5 class="card-title">{{this.ProName}}</h5>
+                        <p class="card-text">{{this.TinyDes}}</p>
+                        <p class="card-text">{{this.Price}}vnđ</p>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+            <nav aria-label="Page navigation ">
+                <ul class="pagination d-flex justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link pre" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item pagePerTotal me-5 ms-5">
+                        {{proData.page}}/{{proData.totalPage}}
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link next" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<script>
+    let data;
+    let per_page = {{ proData.per_page }};
+    let page = {{ proData.page }};
+    let totalPage = {{ proData.totalPage }};
+    let products
+    let currentCat;
+</script>
+
+
+<script src="/js/productPanel.js"></script>

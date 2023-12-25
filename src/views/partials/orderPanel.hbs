@@ -1,0 +1,69 @@
+<div class="tab-pane fade" id="v-pills-oder" role="tabpanel" aria-labelledby="v-pills-oder-tab" tabindex="0">
+    <div class="row h-100">
+        {{!-- cat option --}}
+        <div class="col-5 border-end h-100">
+            <ul class="nav nav-tabs orderTabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="detail-tab" data-bs-toggle="tab"
+                        data-bs-target="#detail-tab-cat_pane" type="button" role="tab"
+                        aria-controls="detail-tab-cat_pane" aria-selected="false">Detail</button>
+                </li>
+            </ul>
+            <div class="tab-content orderContent" id="myTabContent">
+                <div class="tab-pane fade mt-3 show active" id="detail-tab-cat_pane" role="tabpanel"
+                    aria-labelledby="detail-tab" tabindex="0">
+                    {{!-- Detail --}}
+                    <p class="mssDetail">Choose order!</p>
+                    <div class="orderDetail d-none">
+                        <h3 class="orderIDTitle">Choose order!</h3>
+                        <table class="table detailTable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Product Name</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody class="detailTableBody">
+                                <tr >
+                                    <td class="colProName"></td>
+                                    <td class="colQuantity"></td>
+                                    <td class="colPrice"></td>
+                                    <td class="colAmount"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {{!-- Show products list --}}
+        <div class="col-7 h-100">
+            <table class="table orderTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Order ID</th>
+                        <th scope="col">Order date</th>
+                        <th scope="col">User ID</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each orderData}}
+                    <tr class="orderRow" OrderID="{{this.OrderID}}">
+                        <td>{{this.OrderID}}</td>
+                        <td>{{this.OrderDate}}</td>
+                        <td>{{this.UserID}}</td>
+                        <td>{{this.Total}}</td>
+                    </tr>
+                    {{/each}}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="/js/orderPanel.js"></script>

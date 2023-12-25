@@ -1,0 +1,75 @@
+<div class="tab-pane fade" id="v-pills-categories" role="tabpanel" aria-labelledby="v-pills-categories-tab"
+    tabindex="0">
+    <div class="row h-100">
+        {{!-- cat option --}}
+        <div class="col-5 border-end h-100">
+            <ul class="nav nav-tabs catTabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="add-tab" data-bs-toggle="tab" data-bs-target="#add-tab-cat_pane"
+                        type="button" role="tab" aria-controls="add-tab-cat_pane" aria-selected="true">ADD</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="detail-tab" data-bs-toggle="tab" data-bs-target="#detail-tab-cat_pane"
+                        type="button" role="tab" aria-controls="detail-tab-cat_pane"
+                        aria-selected="false">Detail</button>
+                </li>
+            </ul>
+            <div class="tab-content catContent" id="myTabContent">
+                <div class="tab-pane fade show active mt-3" id="add-tab-cat_pane" role="tabpanel"
+                    aria-labelledby="add-tab" tabindex="0">
+                    {{!-- Add --}}
+                    <form class="addCatForm" method="post">
+                        <div class="mb-3 addItem">
+                            <label for="CatID" class="form-label">Cat ID</label>
+                            <input type="number" class="form-control" name="CatID">
+                        </div>
+                        <div class="mb-3 addItem">
+                            <label for="CatName" class="form-label">Cat name</label>
+                            <input type="text" class="form-control" name="CatName">
+                        </div>
+                        <button type="button" onclick="addCat()" class="btn btn-primary">ADD</button>
+                    </form>
+                </div>
+                <div class="tab-pane fade mt-3" id="detail-tab-cat_pane" role="tabpanel" aria-labelledby="detail-tab"
+                    tabindex="0">
+                    {{!-- Detail --}}
+                    <p class="mssDetail">Choose category!</p>
+                    <form class="detailCatForm d-none" method="post">
+                        <div class="mb-3 detailItem">
+                            <label for="CatID" class="form-label">Cat ID</label>
+                            <input type="number" class="form-control" readonly name="CatID">
+                        </div>
+                        <div class="mb-3 detailItem">
+                            <label for="CatName" class="form-label">Cat Name</label>
+                            <input type="text" class="form-control" name="CatName">
+                        </div>
+                        <button type="button" onclick="updateCat()" class="btn btn-primary">SAVE</button>
+                        <button type="button" onclick="removeCat()" class="btn btn-primary">REMOVE</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{!-- Show products list --}}
+        <div class="col-7 h-100">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">CatID</th>
+                        <th scope="col">CatName</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each catData}}
+                    <tr class="catRow" CatID="{{this.CatID}}">
+                        <td>{{this.CatID}}</td>
+                        <td>{{this.CatName}}</td>
+                    </tr>
+                    {{/each}}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="/js/catPanel.js"></script>

@@ -1,0 +1,86 @@
+<div class="tab-pane fade h-100" id="v-pills-chat" role="tabpanel" aria-labelledby="v-pills-chat-tab" tabindex="0">
+    <div class="row h-100">
+        <div class="nomss row"> chưa có tin nhắn</div>
+        <div class="chatArea d-none  row h-100">
+            <div class="col-3 h-100">
+                <!-- Tab navs -->
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="nav cusList flex-column nav-pills text-center" id="v-pills-tab" role="tablist"
+                            aria-orientation="vertical">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-9 h-100">
+                <!-- Tab content -->
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="tab-content chatBox" id="v-pills-tabContent">
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab content -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const hasmss = () => {
+        $('.nomss').addClass('d-none');
+        $('.chatArea').removeClass('d-none')
+    }
+    let chatList = [];
+    const socket = io('https://localhost:3000');
+    socket.emit('join', 'admin');
+    socket.on('message', data => {
+        if (chatList.length == 0) hasmss();
+        const { room, des, mss } = data;
+        if (!$('#v-pills-chat-tab').hasClass('active')) {
+            $('.mssnotify').removeClass('d-none');
+        }
+        if (!chatList.includes(room)) {
+            chatList.push(room);
+            $('.cusList').append(`
+                <a href="#v-pills-${room}" type="button" class="nav-link w-100 ${chatList.length == 1 ? 'active' : ''} " id="v-pills-${room}-tab" data-bs-toggle="pill" 
+                        role="tab" aria-controls="v-pills-${room}" aria-selected="${chatList.length == 1 ? 'true' : 'false'}">${room}</a>
+            `);
+            $('.chatBox').append(`
+                <div class="tab-pane ${chatList.length == 1 ? 'active show' : ''}  fade" id="v-pills-${room}" role="tabpanel" aria-labelledby="v-pills-${room}-tab">
+                                <div class="overflow-y-auto chatBox${room}" style="height: 200px;">
+                                    <div class="text-start mb-3">Customer: <button style="max-width: 50%;" class="text-start btn btn-primary disabled " >${mss}</button></div>
+                                </div>
+                                <form class="w-100 d-flex justify-content-between">
+                                    <input placeholder="Your message..." type="text" class="rounded-pill mssInput${room}" style="width: 80%;">
+                                    <button class="btn btn-success sendButton" target="${room}" style="width: 15%;">Send</button>
+                                </form>
+                </div>
+            `)
+            $('.sendButton').on('click', function (e) {
+                e.preventDefault();
+                let target = $(this).attr('target');
+                if ($(`.mssInput${target}`).val() != null && $(`.mssInput${target}`).val() != '') {
+                    socket.emit('message',{room: 'admin',des: parseInt(target),mss: $(`.mssInput${target}`).val()});
+                    $(`.chatBox${target}`).append(`<div class=" mb-3 text-end"><button style="max-width: 50%;"  class="btn btn-primary disabled text-start">${$(`.mssInput${target}`).val()}</button></div>`)
+                    $(`.mssInput${target}`).val('');
+                    $(`.chatBox${room}`).scrollTop($(`.chatBox${room}`)[0].scrollHeight);
+                }
+            })
+        } else {
+            $(`.chatBox${room}`).append(`<div class=" mb-3 text-start">Customer: <button style="max-width: 50%;" class="btn text-start btn-primary disabled " >${mss}</button></div>`)
+        }
+        $(`.chatBox${room}`).scrollTop($(`.chatBox${room}`)[0].scrollHeight);
+
+    })
+
+    $('#v-pills-chat-tab').on('click', (e) => {
+        $('.mssnotify').addClass('d-none');
+    })
+
+
+</script>
